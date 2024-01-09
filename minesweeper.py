@@ -17,18 +17,7 @@ class Board:
         # we'll save(row, col) tuples into this set
         self.dug = set() # if we dig at 0, 0, then self.dug = {(0, 0)}
 
-    def make_new_board(self):...
-        
-    def assign_values_to_board(self):
-        for r in range(self.dim_size):
-            for c in range(self.dim_size):
-                if self.board[r][c] == '*':
-                   # if this is already a bomb, we don't want to calculate anything
-                    continue
-                self.board[r][c] = self.get_num_neighboring_bombs(r, c)
-
-        
-
+    def make_new_board(self):
         #generate a new board
         board = [[None for _ in range(self.dim_size)] for _ in range(self.dim_size)]
 
@@ -48,6 +37,26 @@ class Board:
 
         return board
 
+    def assign_values_to_board(self):
+        for r in range(self.dim_size):
+            for c in range(self.dim_size):
+                if self.board[r][c] == '*':
+                   # if this is already a bomb, we don't want to calculate anything
+                    continue
+                self.board[r][c] = self.get_num_neighboring_bombs(r, c)
+
+    def get_num_neighboring_bombs(self, row, col):
+        num_neighboring_bombs = 0
+        for r in range(max(0, row-1), min(self.dim_size-1, row+1)+1):
+            for c in range(max(0, col-1), min(self.dim_size-1, col+1)+1):
+                if r == row and c == col:
+                    # our original location, don't check
+                    continue
+                if self.board[r][c] == '*':
+                    num_neighboring_bombs += 1
+
+        return num_neighboring_bombs
+
 
 # goal of this function is to play the game
 def play(dim_size = 10, num_bombs = 10):
@@ -58,3 +67,4 @@ def play(dim_size = 10, num_bombs = 10):
     #           next to a bomb
     # Step 4: repeat steps 2 and 3 unti;; there are no more places to dig -> VICTORY!
     pass
+
