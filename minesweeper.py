@@ -11,15 +11,23 @@ class Board:
         # let's create the board
         # helper function:
         self.board = self.make_new_board() # plant the bombs
+        self.assign_values_to_board()
 
         # initialize a set to keep track of which locations we've uncovered
         # we'll save(row, col) tuples into this set
         self.dug = set() # if we dig at 0, 0, then self.dug = {(0, 0)}
 
-    def make_new_board(self):
-        # construct a new board based on the dim size and num bombs
-        # we should construct the list of lists here or whatever represnetation you prefer
-        # but since we have a 2-D board, list of lists is most natural
+    def make_new_board(self):...
+        
+    def assign_values_to_board(self):
+        for r in range(self.dim_size):
+            for c in range(self.dim_size):
+                if self.board[r][c] == '*':
+                   # if this is already a bomb, we don't want to calculate anything
+                    continue
+                self.board[r][c] = self.get_num_neighboring_bombs(r, c)
+
+        
 
         #generate a new board
         board = [[None for _ in range(self.dim_size)] for _ in range(self.dim_size)]
