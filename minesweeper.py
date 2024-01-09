@@ -1,3 +1,5 @@
+import random
+
 # we are going to use RECURSION and CLASSES for this game
 
 class Board:
@@ -12,7 +14,32 @@ class Board:
 
         # initialize a set to keep track of which locations we've uncovered
         # we'll save(row, col) tuples into this set
-        self.dug = set()
+        self.dug = set() # if we dig at 0, 0, then self.dug = {(0, 0)}
+
+    def make_new_board(self):
+        # construct a new board based on the dim size and num bombs
+        # we should construct the list of lists here or whatever represnetation you prefer
+        # but since we have a 2-D board, list of lists is most natural
+
+        #generate a new board
+        board = [[None for _ in range(self.dim_size)] for _ in range(self.dim_size)]
+
+        # plant bombs
+        bombs_planted = 0
+        while bombs_planted < self.num_bombs:
+            loc = random.randint(self.dim_size**2-1)
+            row = loc // self.dim_size
+            col = loc % self.dim_size
+
+            if board[row][col] == '*':
+                # this meand we've actually planted a bomb there already so keep going
+                continue
+
+            board[row][col] = '*'  # plant the bomb
+            bombs_planted += 1
+
+        return board
+
 
 # goal of this function is to play the game
 def play(dim_size = 10, num_bombs = 10):
