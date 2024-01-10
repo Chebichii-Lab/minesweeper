@@ -1,4 +1,5 @@
 import random
+import re
 
 # we are going to use RECURSION and CLASSES for this game
 
@@ -131,5 +132,31 @@ def play(dim_size = 10, num_bombs = 10):
     # Step 3b: if location is not a bomb, dig recursively until each square is at least
     #           next to a bomb
     # Step 4: repeat steps 2 and 3 unti;; there are no more places to dig -> VICTORY!
-    pass
+    safe = True
+    while len(board.dug) < board.dim_size **2 - num_bombs:
+        print(board)
+        user_input = re.split(',(\\s)*', input("Where would you like to dig? Input as row, col: "))
+        row, col = int(user_input[0]), int(user_input[-1])
+        if row < 0 or row >= board.dim_size or col < 0 or col >= dim_size:
+            print("Invalid location. Try again")
+            continue
+
+        # if valid, we dig
+        safe = board.dig(row, col)
+        if not safe:
+            # dug a bomb aaaaaargh
+            break # (game over rip!!)
+
+    # 2 ways to end the lopp, lets check which one
+    if safe:
+        print("CONGARTULATIONS!!! YOU ARE VICTORIOUS")
+    else:
+        print("SORRY GAME OVER :(")
+        # lets reveal the whole board!
+        board.dug = [(r,c) for r in range(board.dim_size) for c in range(board.dim_size)]  
+        print(board)
+
+
+
+
 
